@@ -126,13 +126,21 @@ function applyQuery(query) {
 function fetchData(){
   RefLoading.value.show();
 
-  let params = { page : PageVal.value }
+  let params = {
+    page : PageVal.value,
+    type : "page",
+    promote_id : 0,
+    user_id : "-1"
+  }
+  /*
   if(Tags && Tags.length > 0) {
     params.tags = Tags.join(' ');
   }
+
+ */
   // console.log(params);
 
-  QUERY.get('/api/user/request/query_brief', params, 'poster_id')
+  QUERY.get('/api/user/request/query_brief', params, 'user_id')
   .then(data => {
     console.log(data)
     if(PageVal.value > data.total_pages) {

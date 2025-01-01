@@ -89,7 +89,10 @@ function applyQuery(query) {
 function fetchData(){
   RefLoading.value.show();
 
-  let params = { page : PageVal.value }
+  let params = {
+    page : PageVal.value,
+    type : "page",
+    user_id : "-1"}
   console.log(params);
 
   QUERY.get('/api/user/response/query_brief', params)

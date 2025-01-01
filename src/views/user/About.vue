@@ -334,7 +334,9 @@ function checkLatest() {
 
 function fetchReply(){
   QUERY.get('/api/user/response/query_brief', {
-    responder_id : UserData.id
+    user_id : UserData.id,
+    type : "user_id",
+    page : 0
   })
   .then(data => {
     console.log(data)
@@ -356,11 +358,6 @@ onMounted(() => {
   QUERY.get('/api/user/info', {}, 'user_id')
   .then(data => {
     console.log(data);
-    QUERY.set_user_city(data.data.register_city);
-
-    let cities = String(data.data.register_city).split(',')
-    UserData.loc1 = cities[0]
-    UserData.loc2 = cities[1]
     UserData.phone = data.data.telephone
     UserData.intro = data.data.description ? data.data.description : ''
     resetUpdate();

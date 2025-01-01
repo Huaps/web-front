@@ -105,10 +105,18 @@ function applyQuery(query) {
 function fetchData(){
   RefLoading.value.show();
 
-  let params = { page : PageVal.value }
+  let params = {
+    page : PageVal.value,
+    type : "page",
+    promote_id : "0",
+    user_id : "-1",
+    }
+  /*
   if(Tags && Tags.length > 0) {
-    params.str = Tags.join(' ');
+    params.tags = Tags.join(' ');
   }
+  */
+
   console.log(params);
 
   QUERY.get('/api/user/request/query_brief', params)

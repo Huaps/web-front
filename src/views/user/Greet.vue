@@ -126,16 +126,18 @@ function fetchData(){
 
   let params = {
     page : PageVal.value,
-    city : String(UserCity.value),
-    is_responder:1
+    type : "user_id",
+    promote_id : 0,
+    user_id : "-1",
   }
 
+  /*
   if(Tags && Tags.length > 0) {
     params.str = Tags.join(' ');
   }
-
+*/
   console.log(params);
-  QUERY.get('/api/user/request/query_brief', params, 'poster_id')
+  QUERY.get('/api/user/request/query_brief', params, 'user_id')
   .then(data => {
     console.log(data)
 
@@ -200,7 +202,9 @@ function parseRoute(query) {
 
 function fetchReply(){
   QUERY.get('/api/user/response/query_brief', {
-    responder_id : UserData.id
+    user_id : UserData.id,
+    type : "user_id",
+    page : 0
   })
   .then(data => {
     console.log(data)
@@ -220,7 +224,6 @@ onMounted(() => {
     RefLoading.value.show();
     QUERY.get('/api/user/info', {}, 'user_id')
     .then(data => {
-      QUERY.set_user_city(data.data.register_city);
       UserCity.value = String(data.data.register_city);
       applyQuery(parseRoute(Route.query));
     })

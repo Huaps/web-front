@@ -112,7 +112,10 @@ function checkDetail() {
 
 function queryBrief() {
   QUERY.get('/api/user/request/query_brief', {
-    request_id : Data.request_id
+    type : "promote_id",
+    promote_id : Data.request_id,
+    user_id : "-1",
+    page : 0
   })
   .then(data => {
     console.log(data)
