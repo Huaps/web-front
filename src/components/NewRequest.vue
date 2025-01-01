@@ -41,7 +41,7 @@
         />
 
         <p class="text-subtitle-1 font-weight-bold mb-2 ml-1">
-          选择目的地
+          乡镇名称及地点
         </p>
         <RegionSelect ref="RegionSelectRef"></RegionSelect>
       </v-stepper-window-item>
