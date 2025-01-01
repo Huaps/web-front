@@ -9,13 +9,16 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@devui-design/icons": "^1.4.0",
     "@mdi/font": "7.0.96",
     "axios": "^1.6.2",
     "core-js": "^3.29.0",
+    "devui-theme": "^0.0.7",
     "echarts": "^5.4.3",
     "element-plus": "^2.4.4",
     "roboto-fontface": "*",
     "vue": "^3.2.0",
+    "vue-devui": "^1.6.29",
     "vue-router": "^4.0.0",
     "vuetify": "^3.0.0"
   },

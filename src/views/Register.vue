@@ -1,16 +1,11 @@
 <template>
-<v-app style="background-color: #EEEEEE;">
+<v-app class="gradient-background">
 <v-main class="d-flex flex-column">
-  <!-- header -->
-  <div>
-    <logo justify-start class="ml-4"/>
-  </div>
-
   <!-- main content -->
   <v-container fluid class="fill-height d-flex flex-row justify-center">
     <!-- input -->
     <div style="width: 420px;" class="align-self-center">
-      <p class="text-h4 font-weight-black mb-6">加入 Travelet</p>
+      <p class="text-h4 font-weight-black mb-6">成为好乡镇的贡献者</p>
 
       <!-- username -->
       <p>用户名</p>
@@ -96,11 +91,7 @@
       </v-btn>
 
       <!-- register -->
-      <div class="d-flex flex-row my-2" style="width: 420px;">
-        <v-divider class="align-self-center mr-3"/>
-        <p class="text-body-2 font-weight-thin font-italic text-grey-lighten-1">或</p>
-        <v-divider class="align-self-center ml-3"/>
-      </div>
+      <v-spacer class="my-4"></v-spacer>
       <v-btn color="grey-darken-3" variant="outlined" class="" width="420px" @click="targetLogin">
         <v-icon size="large" icon="mdi-account"/>
         <p class="font-weight-bold ml-1">立即登录</p>
@@ -195,3 +186,22 @@ function register() {
     });
 }
 </script>
+<style scoped>
+.gradient-background {
+  background: linear-gradient(220.55deg, #FFF6EB 0%, #DFD1C5 100%);
+  background-size: 400% 400%;
+  animation: gradientAnimation 8s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+</style>

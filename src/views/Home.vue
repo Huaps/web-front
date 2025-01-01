@@ -1,17 +1,7 @@
 <template>
-<v-app style="background-color: #EEEEEE;">
+<v-app class="gradient-background">
   <!-- header bar -->
   <v-app-bar class="pt-2 pb-4 " elevation="0" style="background: none;">
-    <template v-slot:image>
-      <v-img
-        gradient="to bottom,
-          rgba(238,238,238,1) 0%,
-          rgba(238,238,238,1) 40%,
-          rgba(238,238,238,.77) 60%,
-          rgba(238,238,238,0) 100%"
-      />
-    </template>
-    <logo class="ml-10 mb-2"></logo>
 
     <!-- navigation -->
     <template v-slot:append>
@@ -51,7 +41,7 @@ const Router = useRouter();
 
 const Targets = {
   about: {
-    name: '主页',
+    name: '我的主页',
     link: '',
     icon: 'mdi-book'
   },
@@ -88,3 +78,23 @@ onMounted(() => {
 })
 
 </script>
+
+<style scoped>
+.gradient-background {
+  background: linear-gradient(220.55deg, #FFF6EB 0%, #DFD1C5 100%);
+  background-size: 400% 400%;
+  animation: gradientAnimation 8s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+</style>

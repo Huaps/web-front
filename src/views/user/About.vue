@@ -1,283 +1,164 @@
 <template>
-<!-- basic info -->
-<div class="d-flex flex-row flex-wrap">
+  <div class="d-flex flex-row flex-wrap" style="height: 80%">
+    <!-- user info -->
+    <div class="d-flex flex-column align-self-start mt-6 ml-3 mr-auto" style="width: 400px;">
+        <v-spacer class="my-10"></v-spacer>
 
-  <!-- latest reponse -->
-  <div class="flex-grow-1 mx-3 pr-4 my-6" style="min-width: 520px;">
-    <v-hover>
-      <template v-slot:default="{ isHovering, props }">
-      <v-card
-        rounded="lg"
-        variant="flat"
-        v-bind="props"
-        :elevation="isHovering ? 10 : 1"
-      >
-        <!-- 图片展示 -->
-        <v-img :src="Latest.img.url" cover max-height="500" />
+        <!-- username -->
+        <p class="text-h4 font-weight-bold">
+          {{ UserData.name }}，欢迎！
+        </p>
 
-        <!-- 最新回复状态 -->
-        <template v-if="Latest.flag">
-          <v-hover>
-            <template v-slot:default="{ isHovering, props }">
-              <v-card
-                rounded="0"
-                elevation="0"
-                class="d-flex flex-column py-4"
-                v-bind="props"
-                :color="isHovering ? 'blue-accent-3' : ''"
-                @click="checkLatest"
+        <!-- uid and location -->
+        <p class="mt-2 text-overline font-weight-regular text-blue-accent-4">
+          <strong class="font-weight-bold ml-1">ID:</strong>
+          {{ UserData.id }}
+        </p>
+      <!--
+        <p class="text-subtitle-1 font-weight-bold">
+          {{ UserData.loc1 }}
+          <strong class="mx-1">
+            <v-avatar size="5" color="grey" />
+          </strong>
+          {{ UserData.loc2 }}
+        </p>
+      -->
+        <v-spacer class="my-4" />
+        <v-divider class="mb-6" />
+
+        <!-- phone -->
+        <div class="d-flex align-center">
+          <template v-if="!Update">
+            <v-icon size="22" color="grey-darken-1">mdi-cellphone-link</v-icon>
+            <p class="ml-3">联系方式：</p>
+            <p> {{ UserData.phone }} </p>
+          </template>
+          <template v-else>
+            <v-text-field variant="outlined" density="compact"
+              :rules="[rules.required, rules.lim]"
+              v-model="Input.phone"
+              prepend-inner-icon="mdi-cellphone-link"
+              type="number"
+              hide-spin-buttons
+            />
+          </template>
+        </div>
+
+        <v-spacer class="mt-2"></v-spacer>
+
+        <!-- intro -->
+        <div class="d-flex align-center">
+          <template v-if="!Update">
+            <v-icon size="22" color="grey-darken-1">mdi-card-account-details</v-icon>
+            <p class="ml-2">我的简介：</p>
+            <p style="word-break: break-all;"> {{ UserData.intro }} </p>
+          </template>
+          <template v-else>
+            <v-textarea
+              counter
+              prepend-inner-icon="mdi-card-account-details"
+              v-model="Input.intro"
+              variant="outlined"
+              auto-grow
+              :rules="[rules.max]"
+            />
+          </template>
+        </div>
+
+
+        <v-spacer class="my-3" />
+        <v-divider class="mb-6" />
+
+        <!-- edit profile -->
+        <template v-if="!Update">
+          <v-btn color="blue-accent-3" class="align-self-start" elevation="0"
+            @click="Update = true"
+          >
+            <p class="text-subtitle-1">更新信息</p>
+
+          </v-btn>
+          <v-spacer class="my-2"></v-spacer>
+          <div class="text-black text-caption">
+            <template v-if="!Change">
+              <v-btn color="red" elevation="0"
+                @click="Change = true"
               >
-                <p class="align-self-center text-subtitle-1 font-weight-medium">
-                  查看最新回复 !
-                  <v-card
-                    class="align-self-center"
-                    elevation="0"
-                    height="2px"
-                    color="blue-accent-3"
-                  />
-                </p>
-                <!-- 展示简述 -->
-                <p class="align-self-center text-body-1 mt-2">
-                  {{ Latest.brief }}
-                </p>
-                <p class="align-self-center text-caption text-grey-darken-1">
-                  最后回复时间: {{ Latest.latest_response_time }}
-                </p>
-              </v-card>
-            </template>
-          </v-hover>
-        </template>
-        <template v-else>
-          <v-card rounded="0" elevation="0" class="d-flex flex-column py-4">
-            <p class="align-self-center text-subtitle-1 font-weight-medium">
-              暂无回复
-              <v-card
-                class="align-self-center"
-                elevation="0"
-                height="2px"
-                color="blue-accent-3"
-              />
-            </p>
-          </v-card>
-        </template>
-
-          <!-- basic info -->
-          <v-divider></v-divider>
-          <v-card-text class="d-flex flex-row">
-            <template v-if="Latest.flag">
-              <v-row class="mx-2 text-grey text-subtitle-2 font-weight-bold" justify="space-around">
-                <v-col class="d-flex align-end" cols="auto">
-                  <v-icon size="25">mdi-alarm</v-icon>
-                  <p class="ml-1">
-                    {{ Latest.date }}
-                  </p>
-                </v-col>
-                <v-col class="d-flex align-end" cols="auto">
-                  <v-icon size="23">mdi-map-marker-outline</v-icon>
-                  <p class="ml-1">
-                    {{ Latest.city }}
-                  </p>
-                </v-col>
-                <v-col class="d-flex align-end" cols="auto">
-                  <v-icon size="23">mdi-text-box-outline</v-icon>
-                  <span class="ml-1 d-inline-block text-truncate">
-                    {{ Latest.brief }}
-                  </span>
-                </v-col>
-              </v-row>
+                <p class="text-subtitle-1">更改密码</p>
+              </v-btn>
             </template>
             <template v-else>
-              <div class="d-flex justify-center" style="width:100%">
-                <p class="align-self-center">
-                  等待其他用户回应
-                </p>
+              <p class="font-weight-bold">
+                修改密码
+              </p>
+              <!-- password -->
+              <p>新密码</p>
+              <v-text-field variant="outlined" density="compact"
+                :rules="[rules.min, rules.number, rules.alpha]"
+                v-model="Input.pwd"
+                :append-inner-icon="Input.vis1 ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                :type="Input.vis1 ? 'text' : 'password'"
+                prepend-inner-icon="mdi-lock-outline"
+                @click:append-inner="Input.vis1 = !Input.vis1"
+              />
+
+              <!-- comfirm -->
+              <p>确认密码</p>
+              <v-text-field variant="outlined" density="compact"
+                :rules="[rules.required, rules.match]"
+                v-model="Input.pwd2"
+                :append-inner-icon="Input.vis2 ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                :type="Input.vis2 ? 'text' : 'password'"
+                prepend-inner-icon="mdi-lock-alert-outline"
+                @click:append-inner="Input.vis2 = !Input.vis2"
+              />
+
+              <div class="d-flex">
+                <v-btn color="red" size="small" elevation="0" @click="resetChange">
+                  <p class="text-caption font-weight-bold">取消</p>
+                </v-btn>
+                <v-btn color="blue-accent-3" size="small" elevation="0" class="ml-2"
+                  :disabled="!input_assert" @click="postChange"
+                >
+                  <p class="text-caption font-weight-bold">确认</p>
+                </v-btn>
               </div>
             </template>
-          </v-card-text>
 
-          <!-- background -->
 
-        </v-card>
-      </template>
-    </v-hover>
-  </div>
 
-  <!-- user info -->
-  <div class="d-flex flex-column align-self-start mt-6 ml-3 mr-auto"
-    style="width: 400px;"
-  >
-    <!-- Password change -->
-    <v-card variant="outlined" rounded="lg" color="grey-lighten-1"
-      style="border: 2px dashed; background-color: #fafafa;"
-      class="pa-4"
-    >
-      <div class="text-black text-caption">
-        <template v-if="!Change">
-          <p class="font-weight-bold">
-            Travelet 网站建议
-          </p>
-          <p class="my-1">
-            定期检查并更新您的密码
-          </p>
-          <v-btn color="red" size="small" elevation="0"
-            @click="Change = true"
-          >
-            <p class="text-caption font-weight-bold">更改密码</p>
-          </v-btn>
+          </div>
+
         </template>
         <template v-else>
-          <p class="font-weight-bold">
-            修改密码
-          </p>
-          <!-- password -->
-          <p>新密码</p>
-          <v-text-field variant="outlined" density="compact"
-            :rules="[rules.min, rules.number, rules.alpha]"
-            v-model="Input.pwd"
-            :append-inner-icon="Input.vis1 ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-            :type="Input.vis1 ? 'text' : 'password'"
-            prepend-inner-icon="mdi-lock-outline"
-            @click:append-inner="Input.vis1 = !Input.vis1"
-          />
-
-          <!-- comfirm -->
-          <p>确认密码</p>
-          <v-text-field variant="outlined" density="compact"
-            :rules="[rules.required, rules.match]"
-            v-model="Input.pwd2"
-            :append-inner-icon="Input.vis2 ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-            :type="Input.vis2 ? 'text' : 'password'"
-            prepend-inner-icon="mdi-lock-alert-outline"
-            @click:append-inner="Input.vis2 = !Input.vis2"
-          />
-
           <div class="d-flex">
-            <v-btn color="red" size="small" elevation="0" @click="resetChange">
-              <p class="text-caption font-weight-bold">取消</p>
-            </v-btn>
-            <v-btn color="blue-accent-3" size="small" elevation="0" class="ml-2"
-              :disabled="!input_assert" @click="postChange"
+            <v-btn color="red" variant="outlined" class="align-self-start" elevation="0"
+              @click="resetUpdate"
             >
-              <p class="text-caption font-weight-bold">确认</p>
+              <p class="text-subtitle-1">取消</p>
+            </v-btn>
+            <v-btn color="blue-accent-3" class="align-self-start ml-2" elevation="0"
+              :disabled="!input_assert2" @click="postUpdate"
+            >
+              <p class="text-subtitle-1">确认</p>
             </v-btn>
           </div>
         </template>
 
+        <v-spacer class="my-3" />
 
 
-      </div>
-    </v-card>
 
-    <v-spacer class="my-3"></v-spacer>
-
-    <!-- username -->
-    <p class="text-h3 font-weight-bold">
-      {{ UserData.name }}
-    </p>
-
-    <!-- uid and location -->
-    <p class="mt-2 text-overline font-weight-regular text-blue-accent-3">
-      <strong class="font-weight-bold ml-1">UID:</strong>
-      {{ UserData.id }}
-    </p>
-
-    <p class="text-subtitle-1 font-weight-bold">
-      {{ UserData.loc1 }}
-      <strong class="mx-1">
-        <v-avatar size="5" color="grey" />
-      </strong>
-      {{ UserData.loc2 }}
-    </p>
-
-    <v-spacer class="my-4" />
-    <v-divider class="mb-6" />
-
-    <!-- phone -->
-    <div class="d-flex align-center">
-      <template v-if="!Update">
-        <v-icon size="22" color="grey-darken-1">mdi-cellphone-link</v-icon>
-        <p class="ml-3"></p>
-        <p> {{ UserData.phone }} </p>
-      </template>
-      <template v-else>
-        <v-text-field variant="outlined" density="compact"
-          :rules="[rules.required, rules.lim]"
-          v-model="Input.phone"
-          prepend-inner-icon="mdi-cellphone-link"
-          type="number"
-          hide-spin-buttons
-        />
-      </template>
     </div>
-
-    <v-spacer class="mt-2"></v-spacer>
-
-    <!-- intro -->
-    <div class="d-flex align-center">
-      <template v-if="!Update">
-        <v-icon size="22" color="grey-darken-1">mdi-card-account-details</v-icon>
-        <p class="ml-2"></p>
-        <p style="word-break: break-all;"> {{ UserData.intro }} </p>
-      </template>
-      <template v-else>
-        <v-textarea
-          counter
-          prepend-inner-icon="mdi-card-account-details"
-          v-model="Input.intro"
-          variant="outlined"
-          auto-grow
-          :rules="[rules.max]"
-        />
-      </template>
+    <div class="flex-grow-1 mx-3 pr-4 my-6" style="min-width: 520px;">
+      <d-carousel height="100%" width="100%" autoplay :autoplay-speed="3000">
+        <d-carousel-item class="d-carousel-item" v-for="item in items" :key="item">
+          <v-img :src="item" cover
+            max-height="1000px"
+          />
+        </d-carousel-item>
+      </d-carousel>
     </div>
-
-
-    <v-spacer class="my-3" />
-    <v-divider class="mb-6" />
-
-    <!-- edit profile -->
-    <template v-if="!Update">
-      <v-btn color="blue-accent-3" class="align-self-start" elevation="0"
-        @click="Update = true"
-      >
-        <p class="text-subtitle-1">更新信息</p>
-      </v-btn>
-    </template>
-    <template v-else>
-      <div class="d-flex">
-        <v-btn color="red" variant="outlined" class="align-self-start" elevation="0"
-          @click="resetUpdate"
-        >
-          <p class="text-subtitle-1">取消</p>
-        </v-btn>
-        <v-btn color="blue-accent-3" class="align-self-start ml-2" elevation="0"
-          :disabled="!input_assert2" @click="postUpdate"
-        >
-          <p class="text-subtitle-1">确认</p>
-        </v-btn>
-      </div>
-    </template>
   </div>
-</div>
-
-<v-spacer class="my-16"></v-spacer>
-
-<v-spacer class="my-4"/>
-
-<!-- title -->
-<p class="text-h5 font-weight-black align-self-center ml-3">
-  我的回复 {{ TotalNum }}
-</p>
-
-<!-- post content -->
-<div class="my-2">
-  <v-row>
-    <v-col v-for="(value, key) in Reply" class="ma-2">
-      <poster :id="Number(value.id)" :data="value"/>
-    </v-col>
-  </v-row>
-</div>
-
 </template>
 
 <script setup>
@@ -334,6 +215,11 @@ const rules = {
   alpha: (v) => (/[a-z]/.test(v) && /[A-Z]/.test(v)) || '不能均为小写或大写',
   match: () => Input.pwd === Input.pwd2 || '两次密码不一致'
 };
+
+const items = ['https://spring-webwebweb.oss-cn-hangzhou.aliyuncs.com/9253d190-3972-41f1-a3e5-9b5476c4ae26.jpg',
+  'page 2',
+  'page 3',
+  'page 4']; // 新增的部分
 
 function resetUpdate() {
   Input.phone = UserData.phone;
@@ -484,3 +370,10 @@ onMounted(() => {
   fetchReply();
 })
 </script>
+<style>
+.d-carousel-item {
+  text-align: center;
+  line-height: 800px;
+  background: #f3f6f8
+}
+</style>

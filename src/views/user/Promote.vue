@@ -13,7 +13,7 @@
     />
 
     <p class=" text-h5 font-weight-black align-self-center">
-      海内存知己
+      我宣传
     </p>
 
   </div>

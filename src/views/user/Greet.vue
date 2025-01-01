@@ -2,7 +2,7 @@
 <div class="d-flex flex-column">
   <!-- title -->
   <p class=" text-h5 font-weight-black align-self-center">
-    天涯若比邻
+    我助力 - 选择帖子开始回复
   </p>
 
   <p class="align-self-center text-body-2 text-grey-darken-2 mt-3">
@@ -37,11 +37,27 @@
   </div>
 
   <!-- page navigation -->
-  <v-pagination 
+  <v-pagination
     v-model="PageVal"
     :length="PageLen"
     @update:model-value="()=>{newQuery();}"
   />
+
+  <v-spacer class="my-4"/>
+
+  <!-- title -->
+  <p class="text-h5 font-weight-black align-self-center ml-3">
+    我的回复 {{ TotalNum }}
+  </p>
+
+  <!-- post content -->
+  <div class="my-2">
+    <v-row>
+      <v-col v-for="(value, key) in Reply" class="ma-2">
+        <poster :id="Number(value.id)" :data="value"/>
+      </v-col>
+    </v-row>
+  </div>
 </div>
 <Loading ref="RefLoading"></Loading>
 </template>
@@ -76,6 +92,16 @@ const PageVal = ref(1);
 const Posts = reactive([])
 var Tags = [];
 
+const Reply = reactive([])
+const UserData = reactive({
+  name: QUERY.get_user_name(),
+  loc1: '',
+  loc2: '',
+  id: QUERY.get_user_id(),
+  phone: '',
+  intro: '',
+})
+
 function newQuery(tags = []) {
   if(!assertTags(Tags, tags)) {
     PageVal.value = 1;
@@ -103,7 +129,7 @@ function fetchData(){
     city : String(UserCity.value),
     is_responder:1
   }
-  
+
   if(Tags && Tags.length > 0) {
     params.str = Tags.join(' ');
   }
@@ -172,6 +198,21 @@ function parseRoute(query) {
   return data;
 }
 
+function fetchReply(){
+  QUERY.get('/api/user/response/query_brief', {
+    responder_id : UserData.id
+  })
+  .then(data => {
+    console.log(data)
+    TotalNum.value = data.total_num;
+    data.data.sort((a, b) => {
+      return new Date(b.modify_time) - new Date(a.modify_time)
+    }).forEach(element => {
+      Reply.push(element);
+    })
+  })
+}
+
 onMounted(() => {
   // console.log(Route.query)
   const city = QUERY.get_user_city();
@@ -187,6 +228,8 @@ onMounted(() => {
     UserCity.value = String(city);
     applyQuery(parseRoute(Route.query));
   }
+
+  fetchReply();
 })
 
 </script>

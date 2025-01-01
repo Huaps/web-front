@@ -62,27 +62,28 @@ import { useRouter } from 'vue-router';
 import * as echarts from 'echarts'
 import * as QUERY from '@/plugins/query'
 import CITIES from '@/plugins/cities'
-import {assert_admin} from '@/plugins/query'
+import * as Events from "@/plugins/event";
 
 const fetchandProcessBillData = async (currentTag, currentLocation, startTime, endTime) => {
   // Fetch bill data
-  const billData = await QUERY.post('/api/admin/query/bill', {
-    tag: currentTag,
-    location: currentLocation,
+  var billData = await QUERY.post('/api/admin/query/bill', {
+    promote_type: currentTag,
+    country_id: currentLocation,
     start_time: startTime,
     end_time: endTime,
   });
+    console.log(billData)
+    // Process bill data
+    const Bills = billData.data.reduce((acc, item) => {
+      acc[item.id] = item;
+      return acc;
+    }, {});
 
-  // Process bill data
-  const Bills = billData.data.reduce((acc, item) => {
-    acc[item.id] = item;
-    return acc;
-  }, {});
+    const sortedBills = Object.values(Bills).sort((a, b) => {
+      return a.year < b.year || (a.year === b.year && a.month < b.month) ? -1 : 1;
+    });
+    return sortedBills;
 
-  const sortedBills = Object.values(Bills).sort((a, b) => {
-    return a.year < b.year || (a.year === b.year && a.month < b.month) ? -1 : 1;
-  });
-  return sortedBills;
 };
 
 export default {
@@ -130,7 +131,7 @@ export default {
     const billHeaders = [
       'id', 'year', 'month', 'amount', 'profit'
     ]
-    
+
     Object.keys(CITIES).forEach((province) => {
       CITIES[province].forEach((city) => {
         cities.value.push(province + '，' + city);
@@ -140,7 +141,7 @@ export default {
     // On mounted lifecycle hook
     onMounted(async () => {
       // Fetch tag options
-      const tagData = await QUERY.post('/api/common/query/tags');
+      const tagData = await QUERY.post('/api/admin/query/tags',{});
       tagOptions.value = tagData.data;
 
       sortedBills.value = await fetchandProcessBillData(
@@ -149,7 +150,7 @@ export default {
         start_month.value,
         end_month.value
       );
-      
+
       filteredBills.value = sortedBills.value.map(item => {
         const filteredItem = {};
         billHeaders.forEach(header => {

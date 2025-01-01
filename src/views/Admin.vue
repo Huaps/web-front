@@ -2,17 +2,6 @@
 <v-app style="background-color: #EEEEEE;">
   <!-- header bar -->
   <v-app-bar class="pt-2 pb-4 " elevation="0" style="background: none;">
-    <template v-slot:image>
-      <v-img 
-        gradient="to bottom, 
-          rgba(238,238,238,1) 0%,
-          rgba(238,238,238,1) 40%, 
-          rgba(238,238,238,.77) 60%,
-          rgba(238,238,238,0) 100%"
-      />
-    </template>
-    <logo class="ml-10 mb-2"></logo>
-
     <!-- navigation -->
     <template v-slot:append>
       <v-hover v-for="(item, key) in Targets" :key="key">
@@ -61,12 +50,12 @@ const Targets = {
 	icon: 'mdi-account'
 	},
 	seeking: {
-	name: '寻去处',
+	name: '我宣传',
 	link: '/request',
 	icon: 'mdi-map-search'
 	},
 	welcome: {
-	name: '欢迎来',
+	name: '我助力',
 	link: '/response',
 	icon: 'mdi-map-marker-star'
 	}
@@ -89,7 +78,7 @@ onMounted(() => {
 	if(!assert_admin()) {
 	Router.push('/login');
 	return;
-	}  
+	}
 })
 
 </script>

@@ -1,15 +1,13 @@
 <template>
-<v-app style="background-color: #EEEEEE;" class="d=flex">
-<div>
-  <logo justify-start class="ml-4"/>
-</div>
+<v-app class="gradient-background">
+
 
 <v-main class="align-self-center" max-width="1000px">
   <!-- main content -->
   <div class="fill-height d-flex flex-row flex-wrap">
     <!-- input -->
     <div style="width: 420px;" class="ml-16 align-self-center">
-      <p class="text-h4 font-weight-black mb-10">登录到 Travelet</p>
+      <p class="text-h4 font-weight-black mb-10">欢迎使用好乡镇</p>
       <!-- username -->
       <p>用户名</p>
       <v-text-field variant="outlined" density="compact"
@@ -28,36 +26,20 @@
         @click:append-inner="Input.vis = !Input.vis"
       />
       <!-- login -->
-      <v-btn color="blue-accent-3" variant="elevated" class="mt-4" width="300px"
+      <v-btn color="blue-accent-3" variant="elevated" class="mt-4" width="410px"
         :disabled="Input.pwd.length == 0"
         @click="login"
         >
         <p class="font-weight-bold">登录</p>
       </v-btn>
       <!-- register -->
-      <div class="d-flex flex-row my-2" style="width: 300px;">
-        <v-divider class="align-self-center mr-3"/>
-        <p class="text-body-2 font-weight-thin font-italic text-grey-lighten-1">或</p>
-        <v-divider class="align-self-center ml-3"/>
-      </div>
-      <v-btn color="grey-darken-3" variant="outlined" class="" width="300px" @click="targetRegister">
+      <v-spacer class="my-4"></v-spacer>
+      <v-btn color="grey-darken-3" variant="outlined" class="" width="410px" @click="targetRegister">
         <v-icon size="large" icon="mdi-account-plus"/>
         <p class="font-weight-bold ml-1">注册</p>
       </v-btn>
     </div>
 
-    <!-- brief intro -->
-    <v-card class="ml-16 d-flex flex-column align-self-center" variant="text" style="width: 420px;">
-      <!-- <v-card-title>
-        <p class="text-h4 font-weight-black text-grey-darken-2 mb-4">{{ Intro.title }}</p>
-      </v-card-title> -->
-      <v-card-text class="align-self-start justify-center">
-        <div v-for="(item, index) in Intro.content" class="d-flex flex-row my-8">
-          <v-icon class="align-self-center mr-2" size="large" color="grey-darken-1">{{ item[1] }}</v-icon>
-          <p class="text-h6 font-weight-bold text-grey-darken-1 align-self-center">{{ item[0] }}</p>
-        </div>
-      </v-card-text>
-    </v-card>
 
   </div>
 </v-main>
@@ -80,14 +62,6 @@ const Input = reactive({
   vis : false
 })
 
-const Intro = {
-  content: [
-    ['轻松发现&分享', 'mdi-map-search-outline'],
-    ['个性化探索', 'mdi-map-marker-path'],
-    ['互动社区', 'mdi-account-multiple']
-  ],
-}
-
 function targetRegister() {
   Input.usr = '';
   Input.pwd = '';
@@ -108,19 +82,6 @@ function login() {
     Events.err('用户名或密码不能为空')
     return;
   }
-/*
-  // 测试
-  QUERY.set_user_name(Input.usr);
-  QUERY.set_user_id(1);
-
-  if (Input.usr == 'admin')
-    Router.push('/admin');
-  else {
-    Events.info('登录成功,正在跳转')
-    setTimeout(() => {
-      Router.push('/home');
-    }, 1000);
-*/
 
   QUERY.post('/api/user/login',{
     username: Input.usr,
@@ -130,11 +91,11 @@ function login() {
 
       if(res.code == 1){
         QUERY.set_user_name(Input.usr);
-      QUERY.set_user_id(res.data.user_id);
+        QUERY.set_user_id(res.data.user_id);
 
-      console.log(res);
-      console.log(res.data.user_id);
-      if(Input.usr == 'admin')
+        console.log(res);
+        console.log(res.data.user_id);
+      if(res.data.user_id == "1"||Input.usr == "admin")
         Router.push('/admin');
       else {
         Events.info('登录成功,正在跳转')
@@ -153,3 +114,22 @@ function login() {
 
 
 </script>
+<style scoped>
+.gradient-background {
+  background: linear-gradient(220.55deg, #FFF6EB 0%, #DFD1C5 100%);
+  background-size: 400% 400%;
+  animation: gradientAnimation 8s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+</style>
