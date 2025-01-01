@@ -6,16 +6,16 @@
     style="position: relative; width: 200px;"
   >
     <p class=" text-h5 font-weight-black align-self-center">
-      “欢迎来”总览
+      “我助力”总览
     </p>
-    
+
   </div>
-  
+
   <p class="align-self-center text-body-2 text-grey-darken-2 mt-3">
     共 <strong>{{ TotalNum }} </strong> 条回复
   </p>
-  
-  
+
+
   <!-- search bar -->
   <div style="min-width: 400px; max-width: 600px;" class="align-self-center">
     <v-divider class="my-6" />
@@ -31,10 +31,10 @@
       </v-col>
     </v-row>
   </div>
-  
+
 
   <!-- page navigation -->
-  <v-pagination 
+  <v-pagination
     v-model="PageVal"
     :length="PageLen"
     @update:model-value="()=>{newQuery()}"
@@ -67,7 +67,7 @@ const PageVal = ref(1);
 const TotalNum = ref(0);
 const Posts = reactive([])
 
-///// query 
+///// query
 function newQuery() {
   let query = {
     page: PageVal.value

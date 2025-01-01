@@ -6,16 +6,16 @@
     style="position: relative; width: 200px;"
   >
     <p class=" text-h5 font-weight-black align-self-center">
-      “寻去处”总览
+      “我宣传”总览
     </p>
-    
+
   </div>
-  
+
   <p class="align-self-center text-body-2 text-grey-darken-2 mt-3">
     共 <strong>{{ TotalNum }} </strong> 条请求
   </p>
-  
-  
+
+
   <!-- search bar -->
   <div style="min-width: 400px; max-width: 600px;" class="align-self-center">
     <v-divider class="my-6" />
@@ -36,10 +36,10 @@
       </v-col>
     </v-row>
   </div>
-  
+
 
   <!-- page navigation -->
-  <v-pagination 
+  <v-pagination
     v-model="PageVal"
     :length="PageLen"
     @update:model-value="()=>{newQuery()}"
@@ -74,7 +74,7 @@ const PageVal = ref(1);
 const Posts = reactive([])
 var Tags = [];
 
-///// query 
+///// query
 function newQuery(tags = []) {
   if(!assertTags(Tags, tags)) {
     PageVal.value = 1;
@@ -84,7 +84,7 @@ function newQuery(tags = []) {
   }
   if(tags && tags.length > 0) {
     query.search = tags;
-  } 
+  }
   Router.push({
     path: '/admin/request',
     query: query
