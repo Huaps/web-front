@@ -162,6 +162,12 @@ const assert = computed(() => {
     rules.match() === true;
 })
 
+const doc_types_code = {
+  "身份证":0,
+  "护照":1,
+  "驾驶证":2
+}
+
 function register() {
   if (!assert.value) {
     Events.warn('注册信息不正确，请检查输入');
@@ -171,7 +177,7 @@ function register() {
   QUERY.post('api/user/register', {
     username: Input.usr,
     real_name: Input.realName,
-    id_type: Input.docType,
+    id_type: doc_types_code[Input.docType],
     id_num: Input.docNumber,
     telephone: Input.phone,
     password: Input.pwd,
