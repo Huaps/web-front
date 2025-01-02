@@ -26,15 +26,14 @@
   <!-- search bar -->
   <div style="min-width: 400px; max-width: 600px;" class="align-self-center">
     <v-divider class="my-6" />
-
     <v-select
       v-model="SelectedTag"
       :items="TagsPreset"
       label="选择标签"
       dense
       outlined
+      @update:model-value="newQuery()"
     />
-
 
   </div>
 
@@ -99,18 +98,13 @@ const Dialog = ref(false);
 const Posts = reactive([])
 const SelectedTag = ref('');
 
-watch(SelectedTag, (newVal) => {
-  console.log('SelectedTag changed:', newVal);
-  newQuery(newVal); // 直接调用方法
-});
-
 
 ///// query
-function newQuery(selectedTag) {
-  const tag = selectedTag
+function newQuery() {
+  const tag = SelectedTag.value
   PageVal.value = 1;
 
-  console.log(selectedTag)
+  console.log(SelectedTag.value)
   const query = {
     page: PageVal.value,
     search: tag ? [tag] : [],
