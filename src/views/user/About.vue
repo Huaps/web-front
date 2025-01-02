@@ -149,7 +149,7 @@
 
 
     </div>
-    <div class="flex-grow-1 mx-3 pr-4 my-6" style="min-width: 520px;">
+    <div class="flex-grow-1 mx-3 pr-4 my-6" style="min-width: 520px;max-height: 1000px">
       <d-carousel height="100%" width="100%" autoplay :autoplay-speed="3000">
         <d-carousel-item class="d-carousel-item" v-for="item in items" :key="item">
           <v-img :src="item" cover
@@ -216,10 +216,9 @@ const rules = {
   match: () => Input.pwd === Input.pwd2 || '两次密码不一致'
 };
 
-const items = ['https://spring-webwebweb.oss-cn-hangzhou.aliyuncs.com/9253d190-3972-41f1-a3e5-9b5476c4ae26.jpg',
-  'page 2',
-  'page 3',
-  'page 4']; // 新增的部分
+const items = ['https://spring-webwebweb.oss-cn-hangzhou.aliyuncs.com/bde2eff0-bec5-4692-91c5-1e7a0520e740.jpg',
+  'https://spring-webwebweb.oss-cn-hangzhou.aliyuncs.com/9cbd3704-6d2d-4a26-a0c1-836832463531.jpg',
+  'https://spring-webwebweb.oss-cn-hangzhou.aliyuncs.com/091fba39-c625-4f1b-9f0f-304e92fed514.jpg']; // 新增的部分
 
 function resetUpdate() {
   Input.phone = UserData.phone;

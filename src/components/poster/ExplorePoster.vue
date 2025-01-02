@@ -112,21 +112,13 @@ const Data = reactive({
   date: props.data.modify_time,
   biref: props.data.description,
   status: props.data.status,
-  img: randomImage(),
+  img: props.data.image_files[0].url,
 })
 
 function tagClick(tag) {
   props.tagAction([tag]);
 }
 
-function randomImage() {
-  let result;
-  result = {
-    id:0,
-    url:"https://spring-webwebweb.oss-cn-hangzhou.aliyuncs.com/9253d190-3972-41f1-a3e5-9b5476c4ae26.jpg"
-  }
-  return result
-}
 
 function checkDetail() {
   Router.push('/home/detail/' + props.id)
