@@ -126,12 +126,12 @@ function applyQuery(query) {
 ///// fetch from server
 function fetchData(){
   RefLoading.value.show();
-  console.log(333)
+  console.log(Tags)
   let params = {
     page : PageVal.value,
     type : "user_id",
     promote_id : 0,
-    tag:Tags[0]
+    tag:Tags
   }
   /*
   if(Tags && Tags.length > 0) {
