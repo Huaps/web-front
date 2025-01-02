@@ -107,7 +107,7 @@ function newQuery(tags = []) {
     query.search = tags;
   }
   Router.push({
-    path: '/home/explore',
+    path: '/home/promote',
     query: query
   })
   applyQuery(query);
