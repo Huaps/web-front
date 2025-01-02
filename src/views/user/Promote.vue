@@ -33,8 +33,8 @@
       label="选择标签"
       dense
       outlined
-      @change="newQuery([SelectedTag])"
     />
+
 
   </div>
 
@@ -99,6 +99,11 @@ const Dialog = ref(false);
 const Posts = reactive([])
 const SelectedTag = ref('');
 
+watch(SelectedTag, (newVal) => {
+  console.log('SelectedTag changed:', newVal);
+  newQuery(newVal); // 直接调用方法
+});
+
 
 ///// query
 function newQuery(selectedTag) {
@@ -123,6 +128,7 @@ function newQuery(selectedTag) {
 function applyQuery(query) {
   PageVal.value = query.page;
   SelectedTag.value = query.search?.[0] || ''; // 单选
+  console.log(SelectedTag)
   fetchData();
 }
 
@@ -134,9 +140,8 @@ function fetchData(){
 
   let params = {
     page : PageVal.value,
-    type : "page",
+    type : "user_id",
     promote_id : 0,
-    user_id : "-1",
     tag:SelectedTag.value
   }
   /*
