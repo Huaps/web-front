@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
     path: '/home',
-    component: () => import('@/views/Home.vue'),
+    component: () => import('@/views/user/Home.vue'),
     children: [
       {
         path: '',
@@ -16,7 +16,7 @@ const routes = [
       },
       {
         path: 'power',
-        component: () => import('@/views/user/Greet.vue')
+        component: () => import('@/views/user/Power.vue')
       },
       {
         path: 'detail/:id',
@@ -26,7 +26,7 @@ const routes = [
   },
   {
     path: '/admin',
-    component: () => import('@/views/Admin.vue'),
+    component: () => import('@/views/admin/Admin.vue'),
     children: [
       {
         path: '',
@@ -52,11 +52,11 @@ const routes = [
   },
   {
     path: '/login',
-    component: () => import('@/views/Login.vue')
+    component: () => import('@/views/common/Login.vue')
   },
   {
     path: '/register',
-    component: () => import('@/views/Register.vue')
+    component: () => import('@/views/common/Register.vue')
   },
   {
     path: '/admin/:catchAll(.*)',

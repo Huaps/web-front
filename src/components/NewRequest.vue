@@ -261,6 +261,7 @@ async function upload() {
         const response = await QUERY.post('/api/upload', fileFormData, null, false);
         if (response.code === 1) {
           urls.push(response.data.url); // 假设后端返回的URL字段为 data.url
+          console.log(response.data.url)
         } else {
           Events.warn('文件上传失败: ' + file.name);
         }
