@@ -117,10 +117,11 @@ function newQuery(tags = []) {
 ///// apply server query
 function applyQuery(query) {
   PageVal.value = query.page;
-  Tags = query.search;
+  Tags = query.search || []; // 确保 Tags 至少是一个空数组
   RefTagsInput.value.setData(Tags);
   fetchData();
 }
+
 
 
 ///// fetch from server
@@ -131,8 +132,9 @@ function fetchData(){
     page: PageVal.value,
     type: "user_id",
     promote_id: 0,
-    tag: Tags !== null ? Tags : "undefine"
+    tag: Tags && Tags.length > 0 ? Tags : "undefine" // 判断是否为空数组
   };
+
 
   /*
   if(Tags && Tags.length > 0) {
