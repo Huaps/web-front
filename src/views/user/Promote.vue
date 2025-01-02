@@ -132,7 +132,7 @@ function fetchData(){
     page: PageVal.value,
     type: "user_id",
     promote_id: 0,
-    tag: Tags && Tags.length > 0 ? Tags : "undefine" // 判断是否为空数组
+    tag: Tags && Tags.length > 0 ? Tags : "undefined" // 判断是否为空数组
   };
 
 
