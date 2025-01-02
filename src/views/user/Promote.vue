@@ -26,11 +26,16 @@
   <!-- search bar -->
   <div style="min-width: 400px; max-width: 600px;" class="align-self-center">
     <v-divider class="my-6" />
-    <TagBar class="align-self-center mb-4" style="height: 90px;"
-      ref="RefTagsInput"
-      :tags="TagsPreset"
-      :action="newQuery"
+
+    <v-select
+      v-model="SelectedTag"
+      :items="TagsPreset"
+      label="选择标签"
+      dense
+      outlined
+      @change="newQuery([SelectedTag])"
     />
+
   </div>
 
   <v-spacer class="my-2"></v-spacer>
@@ -94,32 +99,34 @@ const PageVal = ref(1);
 const Dialog = ref(false);
 const Posts = reactive([])
 var Tags = [];
+const SelectedTag = ref('');
+
 
 ///// query
-function newQuery(tags = []) {
-  if(!assertTags(Tags, tags)) {
-    PageVal.value = 1;
-  }
-  let query = {
-    page: PageVal.value
-  }
-  if(tags && tags.length > 0) {
-    query.search = tags;
-  }
+function newQuery(selectedTags) {
+  const tag = selectedTags[0] || null; // 取单选值
+  PageVal.value = 1;
+
+  const query = {
+    page: PageVal.value,
+    search: tag ? [tag] : [],
+  };
+
   Router.push({
     path: '/home/promote',
-    query: query
-  })
+    query,
+  });
+
   applyQuery(query);
 }
 
 ///// apply server query
 function applyQuery(query) {
   PageVal.value = query.page;
-  Tags = query.search;
-  RefTagsInput.value.setData(Tags);
+  SelectedTag.value = query.search?.[0] || ''; // 单选
   fetchData();
 }
+
 
 
 ///// fetch from server

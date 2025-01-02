@@ -51,9 +51,17 @@
         <p class="text-subtitle-1 font-weight-bold mb-2 ml-1">
           探索标签
         </p>
-        <TagBar icon="mdi-tag-multiple-outline" variant="outlined"
-          ref="TagsInputRef" :tags="TagsPreset">
-        </TagBar>
+        <v-select
+          v-model="Input.tag"
+          :items="TagsPreset"
+          label="选择标签"
+          variant="outlined"
+          :menu-props="{ maxHeight: '200px' }"
+          dense
+          outlined
+          solo
+          icon="mdi-tag-multiple-outline"
+        />
 
         <p class="text-subtitle-1 font-weight-bold mb-2 ml-1">
           详细描述
@@ -179,6 +187,7 @@ const props = defineProps({
 
 const Input = reactive({
   brief: 'Brief',
+  tag:'Tag',
   desc: 'Description',
   images: [],
   image_data: [],
