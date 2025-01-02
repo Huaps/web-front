@@ -129,6 +129,7 @@ function fetchData(){
     type : "user_id",
     promote_id : 0,
     user_id : "-1",
+    tag:Tags[0]
   }
 
   /*

@@ -115,7 +115,8 @@ function queryBrief() {
     type : "promote_id",
     promote_id : Data.request_id,
     user_id : "-1",
-    page : 0
+    page : 0,
+    tag:""
   })
   .then(data => {
     console.log(data)

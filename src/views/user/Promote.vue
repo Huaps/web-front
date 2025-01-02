@@ -130,7 +130,8 @@ function fetchData(){
     page : PageVal.value,
     type : "page",
     promote_id : 0,
-    user_id : "-1"
+    user_id : "-1",
+    tag:Tags[0]
   }
   /*
   if(Tags && Tags.length > 0) {
