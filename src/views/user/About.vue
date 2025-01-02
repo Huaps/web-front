@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-row flex-wrap" style="height: 80%">
+  <div class="d-flex flex-row flex-wrap" style="height: 1000px">
     <!-- user info -->
     <div class="d-flex flex-column align-self-start mt-6 ml-3 mr-auto" style="width: 400px;">
         <v-spacer class="my-10"></v-spacer>
@@ -149,11 +149,11 @@
 
 
     </div>
-    <div class="flex-grow-1 mx-3 pr-4 my-6" style="min-width: 520px;max-height: 1000px">
+    <div class="flex-grow-1 mx-3 pr-4 my-6" style="min-width: 520px;height: 80vh;">
       <d-carousel height="100%" width="100%" autoplay :autoplay-speed="3000">
         <d-carousel-item class="d-carousel-item" v-for="item in items" :key="item">
           <v-img :src="item" cover
-            max-height="1000px"
+            height="100%"
           />
         </d-carousel-item>
       </d-carousel>
