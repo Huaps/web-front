@@ -90,7 +90,6 @@ const Router = useRouter();
 
 ///// ref
 const RefLoading = ref(null);
-const RefTagsInput = ref(null);
 const PageLen = ref(1);
 const TotalNum = ref(0);
 
@@ -98,15 +97,15 @@ const TotalNum = ref(0);
 const PageVal = ref(1);
 const Dialog = ref(false);
 const Posts = reactive([])
-var Tags = [];
 const SelectedTag = ref('');
 
 
 ///// query
-function newQuery(selectedTags) {
-  const tag = selectedTags[0] || null; // 取单选值
+function newQuery(selectedTag) {
+  const tag = selectedTag
   PageVal.value = 1;
 
+  console.log(selectedTag)
   const query = {
     page: PageVal.value,
     search: tag ? [tag] : [],
@@ -138,7 +137,7 @@ function fetchData(){
     type : "page",
     promote_id : 0,
     user_id : "-1",
-    tag:Tags[0]
+    tag:SelectedTag.value
   }
   /*
   if(Tags && Tags.length > 0) {
@@ -153,7 +152,7 @@ function fetchData(){
     console.log(data)
     if(PageVal.value > data.total_pages) {
       PageVal.value = data.total_pages;
-      return newQuery(Tags);
+      return newQuery(SelectedTag.value);
     }
 
     Posts.splice(0);
