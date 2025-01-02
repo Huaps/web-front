@@ -112,7 +112,7 @@ const Data = reactive({
   date: props.data.modify_time,
   biref: props.data.description,
   status: props.data.status,
-  img: props.data.image_files[0].url,
+  img: props.data.image_files[0],
 })
 
 function tagClick(tag) {

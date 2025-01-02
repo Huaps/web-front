@@ -362,7 +362,7 @@ onMounted(() => {
     resetUpdate();
     resetChange();
   })
-  fetchLatest();
+  //fetchLatest();
   fetchReply();
 })
 </script>
