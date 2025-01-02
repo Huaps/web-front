@@ -26,15 +26,12 @@
   <!-- search bar -->
   <div style="min-width: 400px; max-width: 600px;" class="align-self-center">
     <v-divider class="my-6" />
-    <v-select
-      v-model="SelectedTag"
-      :items="TagsPreset"
-      label="选择标签"
-      dense
-      outlined
-      @update:model-value="newQuery()"
-    />
 
+    <TagBar class="align-self-center mb-4" style="height: 90px;"
+      ref="RefTagsInput"
+      :tags="TagsPreset"
+      :action="newQuery"
+    />
   </div>
 
   <v-spacer class="my-2"></v-spacer>
@@ -89,6 +86,7 @@ const Router = useRouter();
 
 ///// ref
 const RefLoading = ref(null);
+const RefTagsInput = ref(null);
 const PageLen = ref(1);
 const TotalNum = ref(0);
 
@@ -96,47 +94,44 @@ const TotalNum = ref(0);
 const PageVal = ref(1);
 const Dialog = ref(false);
 const Posts = reactive([])
-const SelectedTag = ref('');
-
+var Tags = [];
 
 ///// query
-function newQuery() {
-  const tag = SelectedTag.value
-  PageVal.value = 1;
-
-  console.log(SelectedTag.value)
-  const query = {
-    page: PageVal.value,
-    search: tag ? [tag] : [],
-  };
-
+function newQuery(tags = []) {
+  if(!assertTags(Tags, tags)) {
+    PageVal.value = 1;
+  }
+  let query = {
+    page: PageVal.value
+  }
+  if(tags && tags.length > 0) {
+    query.search = tags;
+  }
   Router.push({
     path: '/home/promote',
-    query,
-  });
-
+    query: query
+  })
   applyQuery(query);
 }
 
 ///// apply server query
 function applyQuery(query) {
   PageVal.value = query.page;
-  SelectedTag.value = query.search?.[0] || ''; // 单选
-  console.log(SelectedTag)
+  Tags = query.search;
+  RefTagsInput.value.setData(Tags);
   fetchData();
 }
-
 
 
 ///// fetch from server
 function fetchData(){
   RefLoading.value.show();
-
+  console.log(333)
   let params = {
     page : PageVal.value,
     type : "user_id",
     promote_id : 0,
-    tag:SelectedTag.value
+    tag:Tags[0]
   }
   /*
   if(Tags && Tags.length > 0) {
@@ -151,7 +146,7 @@ function fetchData(){
     console.log(data)
     if(PageVal.value > data.total_pages) {
       PageVal.value = data.total_pages;
-      return newQuery(SelectedTag.value);
+      return newQuery(Tags);
     }
 
     Posts.splice(0);

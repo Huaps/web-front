@@ -1,6 +1,6 @@
 <template>
   <v-combobox :items="TagsPreset" v-model="tags"
-    chips clearable multiple
+    chips clearable
     :variant="props.variant" rounded="lg" color="grey-darken-3"
     label="选择或输入关键词"
   >
