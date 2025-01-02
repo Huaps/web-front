@@ -128,11 +128,12 @@ function fetchData(){
   RefLoading.value.show();
   console.log(Tags)
   let params = {
-    page : PageVal.value,
-    type : "user_id",
-    promote_id : 0,
-    tag:Tags
-  }
+    page: PageVal.value,
+    type: "user_id",
+    promote_id: 0,
+    tag: Tags !== null ? Tags : "undefine"
+  };
+
   /*
   if(Tags && Tags.length > 0) {
     params.tags = Tags.join(' ');
