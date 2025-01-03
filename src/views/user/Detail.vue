@@ -406,16 +406,14 @@ async function uploadModify() {
     formData.append('tags', tag);
   }
 
-  console.log("现在的图片"+BindData.images);
-
   // 上传并添加图片URL到 formData
   for (let i = 0; i < BindData.images.length; i++) {
-    formData.append('image_files', BindData.images[i]);
+    formData.append('image_files', BindData.images[i].url);
   }
 
   // 上传并添加文件URL到 formData
   for (let i = 0; i < BindData.files.length; i++) {
-    formData.append('raw_files', BindData.files[i]);
+    formData.append('raw_files', BindData.files[i].url);
   }
 
   console.log(formData)
