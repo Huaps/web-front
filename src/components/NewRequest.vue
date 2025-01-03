@@ -279,15 +279,15 @@ async function upload() {
   }
 
   // 上传并添加图片URL到 formData
-  const imageUrls = await uploadFiles(Input.images);
-  for (let i = 0; i < imageUrls.length; i++) {
-    formData.append('image_files', imageUrls[i]);
+  for(let i = 0; i < Input.images.length; i++) {
+    const imageUrl = await uploadFiles(Input.images[i]);
+    formData.append('image_files', imageUrl[0]);
   }
 
   // 上传并添加文件URL到 formData
-  const rawUrls = await uploadFiles(Input.files);
-  for (let i = 0; i < rawUrls.length; i++) {
-    formData.append('raw_files', rawUrls[i]);
+  for (let i = 0; i < Input.files.length; i++) {
+    const rawUrl = await uploadFiles(Input.files[i]);
+    formData.append('raw_files', rawUrl[0]);
   }
 
   console.log(formData.data);

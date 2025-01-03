@@ -392,8 +392,8 @@ function cancelUpdate() {
   init();
 }
 
-function uploadModify() {
-  if(!confirm('确认修改?')) return;
+async function uploadModify() {
+  if (!confirm('确认修改?')) return;
   RefLoading.value.show();
   var formData = new FormData();
   formData.append('request_id', REQUEST_ID);
@@ -405,16 +405,42 @@ function uploadModify() {
     const tag = tags[i];
     formData.append('tags', tag);
   }
-  // images
-  for (let i = 0; i < BindInput.images.length; i++) {
-    const file = BindInput.images[i];
-    formData.append('image_files', file);
+
+  // 上传图片并获取URL
+  async function uploadFiles(files) {
+    const urls = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const fileFormData = new FormData();
+      fileFormData.append('file', file);
+      try {
+        const response = await QUERY.post('/api/upload', fileFormData, null, false);
+        if (response.code === 1) {
+          urls.push(response.data);
+          console.log('得到图片' + response.data)
+        } else {
+          Events.warn('文件上传失败: ' + file.name);
+        }
+      } catch (err) {
+        Events.warn('文件上传发生错误: ' + file.name);
+        console.error(err);
+      }
+    }
+    return urls;
   }
-  // files
-  for (let i = 0; i < BindInput.files.length; i++) {
-    const file = BindInput.files[i];
-    formData.append('raw_files', file);
+
+  // 上传并添加图片URL到 formData
+  const imageUrls = await uploadFiles(BindInput.images);
+  for (let i = 0; i < imageUrls.length; i++) {
+    formData.append('image_files', imageUrls[i]);
   }
+
+  // 上传并添加文件URL到 formData
+  const rawUrls = await uploadFiles(BindInput.files);
+  for (let i = 0; i < rawUrls.length; i++) {
+    formData.append('raw_files', rawUrls[i]);
+  }
+
   // deleted
   BindInput.deleted.forEach(id => {
     formData.append('files_deleted', id);
@@ -422,11 +448,11 @@ function uploadModify() {
 
   console.log(formData)
   QUERY.post('/api/user/request/modify', formData, null, false)
-  .then(res => {
-    Events.info('修改成功')
-    Status.modify = false;
-    init();
-  })
+    .then(res => {
+      Events.info('修改成功')
+      Status.modify = false;
+      init();
+    })
 }
 
 // on init
