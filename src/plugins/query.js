@@ -1,4 +1,5 @@
 import * as Events from '@/plugins/event'
+import * as FILES from "@/plugins/files";
 function set_user_name(username) {
   localStorage.setItem('username', username);
 }
@@ -48,17 +49,11 @@ function fileURL(uid) {
   return '/api/file/download/' + String(uid)
 }
 
-async function download(uid) {
-  const response = await fetch('/api/file/download/' + String(uid));
-  const blob = await response.blob();
+async function download(url) {
   const link = document.createElement('a');
-  link.href = window.URL.createObjectURL(blob);
-  const contentDisposition = response.headers.get('content-disposition');
-  const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
-  const fileName = fileNameMatch ? fileNameMatch[1] : 'downloaded_file';
-  link.download = fileName;
-  link.click();
-  window.URL.revokeObjectURL(link.href);
+    link.href = url;
+    link.download = FILES.getFileName(url);
+    link.click();
 }
 
 function get(url, param = {}, identifier = null) {

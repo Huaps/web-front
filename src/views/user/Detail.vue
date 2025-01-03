@@ -134,15 +134,15 @@
 
     <v-spacer class="my-6"></v-spacer>
     <!-- files -->
-    <div rounded="lg" clss="mx-2">
+    <div rounded="lg" class="mx-2">
       <!-- server files -->
-      <v-list-item v-for="(file, index) in BindData.files" :key="index"
-        :title="file.filename"
-        :subtitle="FILES.formatFileSize(file.size)"
-        @click="QUERY.download(file.id)"
-      >
+      <v-list-item
+        v-for="(file, index) in BindData.files"
+        :key="index"
+        :title="FILES.getFileName(file.url)"
+        @click="QUERY.download(file.url)">
         <template v-slot:prepend>
-          <v-icon color="grey-darken-3"> {{ FILES.iconFileType(file.mime) }} </v-icon>
+          <v-icon color="grey-darken-3"> {{ FILES.iconFileType(FILES.getFileExtension(file.url)) }} </v-icon>
         </template>
         <template v-if="Status.modify" v-slot:append>
           <v-btn @click.stop="serverFileRemove(index)" icon="" variant="text" color="red" size="small">
@@ -150,6 +150,7 @@
           </v-btn>
         </template>
       </v-list-item>
+
       <!-- local files -->
       <template v-if="Status.modify">
         <v-file-input
@@ -173,6 +174,7 @@
         </v-list-item>
       </template>
     </div>
+
 
     <v-spacer class="my-3"/>
 
@@ -282,6 +284,7 @@ const BindData = reactive({
   images: [],
   files: [],
 })
+
 
 ///// rules
 const checkIsPoster = computed(() => {

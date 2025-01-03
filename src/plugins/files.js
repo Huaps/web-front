@@ -16,6 +16,13 @@ function read(file) {
   })
 }
 
+function getFileName(url) {
+    return url.split('/').pop(); // 提取 URL 的最后一部分作为文件名
+  }
+
+function getFileExtension(url) {
+    return url.split('.').pop(); // 提取文件扩展名
+  }
 function sync_read(file, onsuccess) {
   const reader = new FileReader();
   reader.onload = () => {
@@ -55,4 +62,4 @@ function iconFileType(ftype) {
   else return 'mdi-file-question';
 }
 
-export {async_read, sync_read, handleFileInput, handleFileRemove ,formatFileSize, iconFileType}
+export {async_read, sync_read, handleFileInput, handleFileRemove ,formatFileSize, iconFileType,getFileName,getFileExtension}
