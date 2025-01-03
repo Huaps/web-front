@@ -256,25 +256,23 @@ async function upload() {
   formData.append('country_id', city);
 
   // 上传图片并获取URL
-  async function uploadFiles(files) {
+  async function uploadFiles(file) {
     const urls = [];
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const fileFormData = new FormData();
-      fileFormData.append('file', file);
-      try {
-        const response = await QUERY.post('/api/upload', fileFormData, null, false);
-        if (response.code === 1) {
-          urls.push(response.data);
-          console.log('得到图片'+response.data)
-        } else {
-          Events.warn('文件上传失败: ' + file.name);
-        }
-      } catch (err) {
-        Events.warn('文件上传发生错误: ' + file.name);
-        console.error(err);
+    const fileFormData = new FormData();
+    fileFormData.append('file', file);
+    try {
+      const response = await QUERY.post('/api/upload', fileFormData, null, false);
+      if (response.code === 1) {
+        urls.push(response.data);
+        console.log('得到图片'+response.data)
+      } else {
+        Events.warn('文件上传失败: ' + file.name);
       }
+    } catch (err) {
+      Events.warn('文件上传发生错误: ' + file.name);
+      console.error(err);
     }
+
     return urls;
   }
 
