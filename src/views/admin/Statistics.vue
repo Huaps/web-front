@@ -5,9 +5,6 @@
       <div class="element">~</div>
       <el-date-picker class="element" v-model="end_month" type="month" @change="handleChange" value-format="YYYY-MM"></el-date-picker>
       <div class="tag-location-picker ml-auto">
-        <el-select v-model="current_tag" placeholder="标签" class="combo-box" @change="handleChange">
-          <el-option v-for="tag in tagOptions" :key="tag" :label="tag" :value="tag"></el-option>
-        </el-select>
         <div style="width: 20px;"></div>
         <el-select v-model="current_location" placeholder="地点" class="combo-box"  @change="handleChange">
           <el-option v-for="item in cities" :key="item" :label="item" :value="item"></el-option>
@@ -64,11 +61,10 @@ import * as QUERY from '@/plugins/query'
 import CITIES from '@/plugins/cities'
 import * as Events from "@/plugins/event";
 
-const fetchandProcessBillData = async (currentTag, currentLocation, startTime, endTime) => {
+const fetchandProcessBillData = async (currentLocation, startTime, endTime) => {
   // Fetch bill data
-  var billData = await QUERY.post('/api/admin/query/bill', {
-    promote_type: currentTag,
-    country_id: currentLocation,
+  var billData = await QUERY.post('/api/admin/query/statistics', {
+    province: currentLocation,
     start_time: startTime,
     end_time: endTime,
   });
@@ -90,11 +86,9 @@ export default {
   setup() {
     // Reactive properties
     const Router = useRouter();
-    const current_tag = ref('老少皆宜');
-    const current_location = ref('北京市，海淀区');
-    const start_month = ref('2023-09');
-    const end_month = ref('2023-12');
-    const tagOptions = ref([]);
+    const current_location = ref('北京市');
+    const start_month = ref('2024-09');
+    const end_month = ref('2024-12');
     const cities = ref([]);
     const filteredBills = ref([]);
     const sortedBills = ref([]);
@@ -102,14 +96,14 @@ export default {
     const chartOption = ref({
       tooltip: {},
       legend: {
-        data: ['盈利'],
+        data: ['月累计用户数'],
       },
       xAxis: {
         data: [],
       },
       yAxis: {
         axisLabel: {
-          formatter: '{value} 元',
+          formatter: '{value} 人',
         },
       },
       series: [
@@ -122,14 +116,13 @@ export default {
       ],
     });
     const headers = ref([
-      { title: '账单ID', value: 'id' },
       { title: '年', value: 'year' },
       { title: '月', value: 'month' },
-      { title: '达标数量', value: 'amount' },
-      { title: '收益/元', value: 'profit' }
+      { title: '宣传用户数', value: 'promote' },
+      { title: '助力用户数', value: 'power' }
     ]);
     const billHeaders = [
-      'id', 'year', 'month', 'amount', 'profit'
+      'year', 'month', 'promote', 'power'
     ]
 
     Object.keys(CITIES).forEach((province) => {
@@ -141,11 +134,9 @@ export default {
     // On mounted lifecycle hook
     onMounted(async () => {
       // Fetch tag options
-      const tagData = await QUERY.post('/api/admin/query/tags',{});
-      tagOptions.value = tagData.data;
+      //const tagData = await QUERY.post('/api/admin/query/tags',{});
 
       sortedBills.value = await fetchandProcessBillData(
-        current_tag.value,
         current_location.value,
         start_month.value,
         end_month.value
@@ -183,11 +174,9 @@ export default {
     return {
       headers,
       filteredBills,
-      current_tag,
       current_location,
       start_month,
       end_month,
-      tagOptions,
       cities,
       sortedBills,
       myChart,
@@ -197,13 +186,12 @@ export default {
   methods: {
     async handleChange() {
       this.sortedBills = await this.fetchandProcessBillData(
-        this.current_tag,
         this.current_location,
         this.start_month,
         this.end_month
       );
       const billHeaders = [
-        'id', 'year', 'month', 'amount', 'profit'
+        'year', 'month', 'promote', 'power'
       ]
       // Update filteredBills
       this.filteredBills = this.sortedBills.map(item => {

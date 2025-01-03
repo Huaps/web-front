@@ -40,8 +40,8 @@ const Router = useRouter();
 
 const Targets = {
 	about: {
-	name: '账单',
-	link: '/bill',
+	name: '统计',
+	link: '/statistics',
 	icon: 'mdi-book'
 	},
 	user: {
@@ -61,7 +61,7 @@ const Targets = {
 	}
 }
 
-const Selected = ref('bill');
+const Selected = ref('statistics');
 function targetTo(key) {
 	Selected.value = key;
 	Router.push('/admin' + Targets[key].link);

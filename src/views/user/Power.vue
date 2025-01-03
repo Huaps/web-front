@@ -113,7 +113,7 @@ function newQuery(tags = []) {
     query.search = tags;
   }
   Router.push({
-    path: '/home/greet',
+    path: '/home/power',
     query: query
   })
   applyQuery(query);
@@ -126,10 +126,9 @@ function fetchData(){
 
   let params = {
     page : PageVal.value,
-    type : "user_id",
+    type : "all",
     promote_id : 0,
-    user_id : "-1",
-    tag:Tags[0]
+    tag: Tags && Tags.length > 0 ? Tags : "undefined" // 判断是否为空数组
   }
 
   /*
@@ -164,7 +163,7 @@ function fetchData(){
 
 function applyQuery(query) {
   PageVal.value = query.page;
-  Tags = query.search;
+  Tags = query.search || []; // 确保 Tags 至少是一个空数组
   RefTagsInput.value.setData(Tags);
   fetchData();
 }

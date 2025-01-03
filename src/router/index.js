@@ -30,22 +30,22 @@ const routes = [
     children: [
       {
         path: '',
-        redirect: '/admin/bill'
+        redirect: '/admin/statistics'
       },
       {
-        path: 'bill',
-        component: () => import('@/views/admin/Bill.vue')
+        path: 'statistics',
+        component: () => import('@/views/admin/Statistics.vue')
       },
       {
         path: 'user',
         component: () => import('@/views/admin/User.vue')
       },
       {
-        path: 'request',
+        path: 'promote',
         component: () => import('@/views/admin/Request.vue')
       },
       {
-        path: 'response',
+        path: 'power',
         component: () => import('@/views/admin/Response.vue')
       },
     ]
@@ -60,7 +60,7 @@ const routes = [
   },
   {
     path: '/admin/:catchAll(.*)',
-    redirect: '/admin/bill'
+    redirect: '/admin/statistics'
   },
   {
     path: '/:catchAll(.*)', redirect: '/home'
