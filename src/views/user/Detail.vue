@@ -104,8 +104,8 @@
       <v-row class="mt-4">
         <!-- server images -->
         <v-col v-for="(item, index) in BindData.images" cols="auto">
-          <v-img @click="RefImageAmp.url(item.id)"
-            :src="QUERY.fileURL(item.id)"
+          <v-img @click="item.url"
+            :src="item.url"
             aspect-ratio="1" width="160" cover
             lazy-src="https://fakeimg.pl/300x300/?retina=1&text=image&font=lobster"
           >
