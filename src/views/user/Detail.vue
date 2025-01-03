@@ -118,8 +118,8 @@
         </v-col>
         <!-- local images -->
         <v-col v-for="(item, index) in BindInput.images" cols="auto">
-          <v-img @click="RefImageAmp.raw(BindInput.image_data[index])"
-            :src="BindInput.image_data[index]"
+          <v-img @click="RefImageAmp.raw(BindInput.image_data[index].url)"
+            :src="BindInput.image_data[index].url"
             aspect-ratio="1" cover width="160"
           >
             <div class="d-flex">
