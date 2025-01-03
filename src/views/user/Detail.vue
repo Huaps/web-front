@@ -406,45 +406,17 @@ async function uploadModify() {
     formData.append('tags', tag);
   }
 
-  // 上传图片并获取URL
-  async function uploadFiles(files) {
-    const urls = [];
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const fileFormData = new FormData();
-      fileFormData.append('file', file);
-      try {
-        const response = await QUERY.post('/api/upload', fileFormData, null, false);
-        if (response.code === 1) {
-          urls.push(response.data);
-          console.log('得到图片' + response.data)
-        } else {
-          Events.warn('文件上传失败: ' + file.name);
-        }
-      } catch (err) {
-        Events.warn('文件上传发生错误: ' + file.name);
-        console.error(err);
-      }
-    }
-    return urls;
-  }
+  console.log("现在的图片"+BindInput.images);
 
   // 上传并添加图片URL到 formData
-  const imageUrls = await uploadFiles(BindInput.images);
-  for (let i = 0; i < imageUrls.length; i++) {
-    formData.append('image_files', imageUrls[i]);
+  for (let i = 0; i < BindInput.images.length; i++) {
+    formData.append('image_files', BindInput.images[i]);
   }
 
   // 上传并添加文件URL到 formData
-  const rawUrls = await uploadFiles(BindInput.files);
-  for (let i = 0; i < rawUrls.length; i++) {
-    formData.append('raw_files', rawUrls[i]);
+  for (let i = 0; i < BindInput.files.length; i++) {
+    formData.append('raw_files', BindInput.files[i]);
   }
-
-  // deleted
-  BindInput.deleted.forEach(id => {
-    formData.append('files_deleted', id);
-  })
 
   console.log(formData)
   QUERY.post('/api/user/request/modify', formData, null, false)
