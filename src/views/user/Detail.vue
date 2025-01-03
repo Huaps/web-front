@@ -396,7 +396,7 @@ async function uploadModify() {
   if (!confirm('确认修改?')) return;
   RefLoading.value.show();
   var formData = new FormData();
-  formData.append('request_id', REQUEST_ID);
+  formData.append('promote_id', REQUEST_ID);
   formData.append('title', BindData.biref);
   formData.append('description', BindInput.desc);
   // tags
