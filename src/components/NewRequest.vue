@@ -248,11 +248,8 @@ async function upload() {
   // brief
   formData.append('title', Input.brief);
   // tags
-  const tags = TagsInputRef.value.getData();
-  for (let i = 0; i < tags.length; i++) {
-    const tag = tags[i];
-    formData.append('promote_type', tag);
-  }
+  const tags = TagsInputRef.value;
+  formData.append('promote_type', tags);
   // desc
   formData.append('description', Input.desc);
   // region
