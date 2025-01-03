@@ -410,12 +410,12 @@ async function uploadModify() {
 
   // 上传并添加图片URL到 formData
   for (let i = 0; i < BindData.images.length; i++) {
-    formData.append('image_files', BindInput.images[i]);
+    formData.append('image_files', BindData.images[i]);
   }
 
   // 上传并添加文件URL到 formData
   for (let i = 0; i < BindData.files.length; i++) {
-    formData.append('raw_files', BindInput.files[i]);
+    formData.append('raw_files', BindData.files[i]);
   }
 
   console.log(formData)
