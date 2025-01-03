@@ -256,36 +256,38 @@ async function upload() {
   formData.append('country_id', city);
 
   // 上传图片并获取URL
-  async function uploadFiles(file) {
+  async function uploadFiles(files) {
     const urls = [];
-    const fileFormData = new FormData();
-    fileFormData.append('file', file);
-    try {
-      const response = await QUERY.post('/api/upload', fileFormData, null, false);
-      if (response.code === 1) {
-        urls.push(response.data);
-        console.log('得到图片'+response.data)
-      } else {
-        Events.warn('文件上传失败: ' + file.name);
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const fileFormData = new FormData();
+      fileFormData.append('file', file);
+      try {
+        const response = await QUERY.post('/api/upload', fileFormData, null, false);
+        if (response.code === 1) {
+          urls.push(response.data);
+          console.log('得到图片'+response.data)
+        } else {
+          Events.warn('文件上传失败: ' + file.name);
+        }
+      } catch (err) {
+        Events.warn('文件上传发生错误: ' + file.name);
+        console.error(err);
       }
-    } catch (err) {
-      Events.warn('文件上传发生错误: ' + file.name);
-      console.error(err);
     }
-
     return urls;
   }
 
   // 上传并添加图片URL到 formData
-  for(let i = 0; i < Input.images.length; i++) {
-    const imageUrl = await uploadFiles(Input.images[i]);
-    formData.append('image_files', imageUrl[0]);
+  const imageUrls = await uploadFiles(Input.images);
+  for (let i = 0; i < imageUrls.length; i++) {
+    formData.append('image_files', imageUrls[i]);
   }
 
   // 上传并添加文件URL到 formData
-  for (let i = 0; i < Input.files.length; i++) {
-    const rawUrl = await uploadFiles(Input.files[i]);
-    formData.append('raw_files', rawUrl[0]);
+  const rawUrls = await uploadFiles(Input.files);
+  for (let i = 0; i < rawUrls.length; i++) {
+    formData.append('raw_files', rawUrls[i]);
   }
 
   console.log(formData.data);
