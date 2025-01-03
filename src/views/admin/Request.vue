@@ -107,7 +107,7 @@ function fetchData(){
 
   let params = {
     page : PageVal.value,
-    type : "page",
+    type : "all",
     promote_id : "0",
     user_id : "-1",
     tag:Tags[0]
