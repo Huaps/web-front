@@ -385,10 +385,6 @@ function uploadModify() {
     const file = BindInput.files[i];
     formData.append('raw_files', file);
   }
-  // deleted
-  BindInput.deleted.forEach(id => {
-    formData.append('files_deleted', id);
-  })
 
   QUERY.post('/api/user/response/modify', formData, null, false)
   .then(res => {
@@ -466,7 +462,7 @@ async function upload() {
 function remove() {
   if(!confirm('确认删除?')) return;
   QUERY.post('/api/user/response/delete', {
-    response_id: props.response_id
+    power_id: props.response_id
   })
   .then(data => {
     Events.warn('删除成功');
