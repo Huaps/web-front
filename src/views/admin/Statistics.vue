@@ -1,16 +1,17 @@
 <template>
   <div class="main-container">
     <div class="container">
-      <d-date-picker-pro v-model="start_month" class="mb20 wh250" type="month" @change="handleChange" value-format="YYYY-MM"/>
-      <div class="element">~</div>
-      <d-date-picker-pro v-model="end_month" class="mb20 wh250" type="month" @change="handleChange" value-format="YYYY-MM"/>
+      <p>起始时间</p>
+      <d-date-picker-pro v-model="start_month" class="mb20 wh250" type="month" @update:model-value="handleChange" value-format="YYYY-MM"/>
+      <p>结束时间</p>
+      <d-date-picker-pro v-model="end_month" class="mb20 wh250" type="month" @update:model-value="handleChange" value-format="YYYY-MM"/>
       <div class="tag-location-picker ml-auto">
         <div style="width: 20px;"></div>
         <d-select
           v-model="current_location"
           placeholder="地点"
           class="combo-box"
-          @change="handleChange"
+          @update:model-value="handleChange"
           :options="cities">
         </d-select>
       </div>
@@ -80,13 +81,26 @@ import { useRouter } from 'vue-router';
 import * as echarts from 'echarts'
 import * as QUERY from '@/plugins/query'
 import CITIES from '@/plugins/cities'
+import dayjs from 'dayjs';
+
 
 const fetchandProcessBillData = async (currentLocation, startTime, endTime) => {
+  // 格式化日期为 YYYY-MM 格式
+  const formatDate = (date) => {
+    if (!dayjs(date, 'YYYY-MM', true).isValid()) {
+      return dayjs(date).format('YYYY-MM');
+    }
+    return date;
+  };
+
+  const formattedStartTime = formatDate(startTime);
+  const formattedEndTime = formatDate(endTime);
+
   // Fetch bill data
   const billData = await QUERY.post('/api/admin/query/statistics', {
     province: currentLocation,
-    start_time: startTime,
-    end_time: endTime,
+    start_time: formattedStartTime,
+    end_time: formattedEndTime,
   });
   console.log(billData);
 
