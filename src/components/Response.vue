@@ -444,12 +444,13 @@ async function upload() {
     formData.append('image_files', imageUrls[i]);
   }
 
+
   // 上传并添加文件URL到 formData
   const rawUrls = await uploadFiles(BindInput.files);
   for (let i = 0; i < rawUrls.length; i++) {
     formData.append('raw_files', rawUrls[i]);
   }
-  
+
   // post to server
   QUERY.post('/api/user/response/post', formData, null, false)
     .then(res => {
