@@ -375,7 +375,7 @@ function uploadModify() {
 
   Status.uploading = true;
   var formData = new FormData();
-  formData.append('response_id', props.response_id);
+  formData.append('power_id', props.response_id);
   formData.append('description', BindInput.desc);
   // images
   for (let i = 0; i < BindInput.images.length; i++) {
