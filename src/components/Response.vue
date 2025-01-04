@@ -337,7 +337,7 @@ function accept() {
     console.log("promote_id:"+props.request_id+";power_id:"+props.response_id);
     if(RefLoading.value) RefLoading.value.hide();
     Events.info('已采纳回复')
-    window.location.reload();
+    //window.location.reload();
   })
 }
 
@@ -353,7 +353,7 @@ function reject() {
     console.log("promote_id:"+props.request_id+";power_id:"+props.response_id);
     if(RefLoading.value) RefLoading.value.hide();
     Events.warn('已拒绝回复')
-    window.location.reload();
+    //window.location.reload();
   })
 }
 
