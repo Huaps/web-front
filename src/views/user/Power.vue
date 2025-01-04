@@ -47,7 +47,7 @@
 
   <!-- title -->
   <p class="text-h5 font-weight-black align-self-center ml-3">
-    我的回复 {{ TotalNum }}
+    我的回复 {{ MyReplyTotalNum }}
   </p>
 
   <!-- post content -->
@@ -81,6 +81,7 @@ const Router = useRouter();
 const UserCity = ref('');
 const PageLen = ref(1);
 const TotalNum = ref(0);
+const MyReplyTotalNum = ref(0);
 
 ///// ref
 const RefTagsInput = ref(null);
@@ -208,7 +209,7 @@ function fetchReply(){
   })
   .then(data => {
     console.log(data)
-    TotalNum.value = data.total_num;
+    MyReplyTotalNum.value = data.total_num;
     data.data.sort((a, b) => {
       return new Date(b.modify_time) - new Date(a.modify_time)
     }).forEach(element => {
