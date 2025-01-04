@@ -2,7 +2,7 @@
   <v-card color="white" width="400" rounded="lg" class="pa-1">
     <v-card-title class="d-flex align-end">
       <p class="text-overline font-weight-bold">UID: {{ Data.uid }}</p>
-      <p class="text-overline ml-auto font-weight-medium text-grey-darken-1"> {{ Data.id_num }} </p>
+      <p class="text-overline ml-auto font-weight-medium text-grey-darken-1"> {{ }}{{ Data.id_num }} </p>
     </v-card-title>
 
     <v-card-text class="text-subtitle-1 py-2">
@@ -51,6 +51,9 @@ const Data = reactive({
   is_admin: false,
 })
 
+const id_types_code = {
+  0:""
+}
 onMounted(()=>{
   Data.is_admin = props.data.is_admin;
   Data.name = props.data.username;
