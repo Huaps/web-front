@@ -121,7 +121,7 @@ function tagClick(tag) {
 
 
 function checkDetail() {
-  Router.push('/home/detail/' + props.id)
+  Router.push('/home/detail/' + props.data.promote_id)
 }
 
 onMounted(()=>{

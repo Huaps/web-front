@@ -288,6 +288,7 @@ const BindData = reactive({
 
 ///// rules
 const checkIsPoster = computed(() => {
+  console.log("当前用户：" + USER_ID + "；发帖用户：" + BindData.poster_id)
   return USER_ID == BindData.poster_id;
 })
 const rules = {
