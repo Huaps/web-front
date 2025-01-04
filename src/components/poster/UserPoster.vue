@@ -2,7 +2,7 @@
   <v-card color="white" width="400" rounded="lg" class="pa-1">
     <v-card-title class="d-flex align-end">
       <p class="text-overline font-weight-bold">UID: {{ Data.uid }}</p>
-      <p class="text-overline ml-auto font-weight-medium text-grey-darken-1"> {{ Data.time }} </p>
+      <p class="text-overline ml-auto font-weight-medium text-grey-darken-1"> {{ Data.id_num }} </p>
     </v-card-title>
 
     <v-card-text class="text-subtitle-1 py-2">
@@ -19,7 +19,7 @@
           </v-icon>
         </template>
         <v-list-item-title>{{ Data.name }}</v-list-item-title>
-        <v-list-item-subtitle>{{ Data.city }}</v-list-item-subtitle>
+        <v-list-item-subtitle>{{ Data.real_name }}</v-list-item-subtitle>
         <template v-slot:append>
           <div class="d-flex align-end justify-end pt-3">
             <v-icon size="20">mdi-phone-outline</v-icon>
@@ -45,8 +45,8 @@ const Data = reactive({
   name: '',
   uid: '',
   phone: '',
-  city: '',
-  time: '',
+  real_name: '',
+  id_num: '',
   intro: '',
   is_admin: false,
 })
@@ -54,9 +54,9 @@ const Data = reactive({
 onMounted(()=>{
   Data.is_admin = props.data.is_admin;
   Data.name = props.data.username;
-  Data.uid = props.data.id;
-  Data.city = String(props.data.register_city)
-  Data.time = props.data.register_time,
+  Data.uid = props.data.user_id;
+  Data.real_name = props.data.real_name
+  Data.id_num = props.data.id_num,
   Data.phone = props.data.telephone
   Data.intro = props.data.description ? props.data.description : ''
 })

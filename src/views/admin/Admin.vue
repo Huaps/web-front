@@ -33,7 +33,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import Logo from '@/components/util/Logo.vue';
 import {assert_admin, clear} from '@/plugins/query'
 
 const Router = useRouter();
@@ -48,16 +47,6 @@ const Targets = {
 	name: '用户',
 	link: '/user',
 	icon: 'mdi-account'
-	},
-	seeking: {
-	name: '我宣传',
-	link: '/request',
-	icon: 'mdi-map-search'
-	},
-	welcome: {
-	name: '我助力',
-	link: '/response',
-	icon: 'mdi-map-marker-star'
 	}
 }
 

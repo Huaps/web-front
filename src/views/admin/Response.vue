@@ -90,7 +90,6 @@ function fetchData(){
   RefLoading.value.show();
 
   let params = {
-    page : PageVal.value,
     type : "page",
     user_id : "-1"}
   console.log(params);

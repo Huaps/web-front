@@ -204,7 +204,7 @@ function fetchReply(){
   QUERY.get('/api/user/response/query_brief', {
     user_id : UserData.id,
     type : "user_id",
-    page : 0
+    promote_id : 0
   })
   .then(data => {
     console.log(data)

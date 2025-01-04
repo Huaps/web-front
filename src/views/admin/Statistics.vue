@@ -1,18 +1,27 @@
 <template>
   <div class="main-container">
     <div class="container">
-      <el-date-picker class="element" v-model="start_month" type="month" @change="handleChange" value-format="YYYY-MM"></el-date-picker>
+      <d-date-picker-pro v-model="start_month" class="mb20 wh250" type="month" @change="handleChange" value-format="YYYY-MM"/>
       <div class="element">~</div>
-      <el-date-picker class="element" v-model="end_month" type="month" @change="handleChange" value-format="YYYY-MM"></el-date-picker>
+      <d-date-picker-pro v-model="end_month" class="mb20 wh250" type="month" @change="handleChange" value-format="YYYY-MM"/>
       <div class="tag-location-picker ml-auto">
         <div style="width: 20px;"></div>
-        <el-select v-model="current_location" placeholder="地点" class="combo-box"  @change="handleChange">
-          <el-option v-for="item in cities" :key="item" :label="item" :value="item"></el-option>
-        </el-select>
+        <d-select
+          v-model="current_location"
+          placeholder="地点"
+          class="combo-box"
+          @change="handleChange"
+          :options="cities">
+        </d-select>
       </div>
     </div>
     <div id="chart" :style="{ width: '80%', height: '400px' }" class="charts"></div>
-    <v-data-table :headers="headers" :items="filteredBills" :items-per-page="10" :style="{ width: '80%' }"></v-data-table>
+    <v-data-table
+      :headers="headers"
+      :items="filteredBills"
+      :items-per-page="10"
+      :style="{ width: '80%' }">
+    </v-data-table>
   </div>
 </template>
 
@@ -36,6 +45,17 @@
   align-items: center;
 }
 
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* 确保宽度 */
+}
+
+.container {
+  width: 70%; /* 确保有实际宽度 */
+}
+
 .tag-location-picker {
   display: flex;
   flex-direction: row;
@@ -54,39 +74,37 @@
 </style>
 
 <script>
-import { ref, watch, onMounted } from 'vue'
+import {ref, watch, onMounted, reactive} from 'vue'
 import { useRouter } from 'vue-router';
 import * as echarts from 'echarts'
 import * as QUERY from '@/plugins/query'
 import CITIES from '@/plugins/cities'
-import * as Events from "@/plugins/event";
 
 const fetchandProcessBillData = async (currentLocation, startTime, endTime) => {
   // Fetch bill data
-  var billData = await QUERY.post('/api/admin/query/statistics', {
+  const billData = await QUERY.post('/api/admin/query/statistics', {
     province: currentLocation,
     start_time: startTime,
     end_time: endTime,
   });
-    console.log(billData)
-    // Process bill data
-    const Bills = billData.data.reduce((acc, item) => {
-      acc[item.id] = item;
-      return acc;
-    }, {});
+  console.log(billData);
 
-    const sortedBills = Object.values(Bills).sort((a, b) => {
-      return a.year < b.year || (a.year === b.year && a.month < b.month) ? -1 : 1;
-    });
-    return sortedBills;
+  // Process bill data
+  if (!billData.data || !Array.isArray(billData.data)) {
+    console.error("Invalid data format: ", billData);
+    return [];
+  }
 
+  // Return the data as-is since the order is preserved
+  return billData.data;
 };
+
 
 export default {
   setup() {
     // Reactive properties
     const Router = useRouter();
-    const current_location = ref('北京市');
+    const current_location = ref('none');
     const start_month = ref('2024-09');
     const end_month = ref('2024-12');
     const cities = ref([]);
@@ -94,47 +112,59 @@ export default {
     const sortedBills = ref([]);
     const myChart = ref(null);
     const chartOption = ref({
-      tooltip: {},
-      legend: {
-        data: ['月累计用户数'],
-      },
-      xAxis: {
-        data: [],
-      },
-      yAxis: {
-        axisLabel: {
-          formatter: '{value} 人',
-        },
-      },
-      series: [
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'line',
+					snap: true
+				}
+			},
+			xAxis: {
+				type: 'category',
+				data: []
+			},
+			yAxis: {
+				type: 'value'
+			},
+			series: [
+				{
+					data: [],
+					type: 'line'
+				},
         {
-          name: '盈利',
-          type: 'line',
-          smooth: true,
-          data: [],
-        },
-      ],
-    });
+					data: [],
+					type: 'line'
+				}
+			]
+		});
+
     const headers = ref([
       { title: '年', value: 'year' },
       { title: '月', value: 'month' },
       { title: '宣传用户数', value: 'promote' },
       { title: '助力用户数', value: 'power' }
     ]);
+
     const billHeaders = [
       'year', 'month', 'promote', 'power'
     ]
 
     Object.keys(CITIES).forEach((province) => {
-      CITIES[province].forEach((city) => {
-        cities.value.push(province + '，' + city);
-      });
+      cities.value.push(province);
+    });
+
+
+     // Watch for data updates
+    watch(sortedBills, (newSortedBills) => {
+      chartOption.value.xAxis.data = sortedBills.value.map(item => {
+        return item.year + '-' + item.month;
+      }); // 提取每个月份
+      chartOption.value.series[0].data = newSortedBills.map((item) => item.promote); // 填充宣传用户数
+      chartOption.value.series[1].data = newSortedBills.map((item) => item.power);   // 填充助力用户数
     });
 
     // On mounted lifecycle hook
     onMounted(async () => {
-      // Fetch tag options
-      //const tagData = await QUERY.post('/api/admin/query/tags',{});
 
       sortedBills.value = await fetchandProcessBillData(
         current_location.value,
@@ -155,7 +185,8 @@ export default {
       chartOption.value.xAxis.data = sortedBills.value.map(item => {
         return item.year + '-' + item.month;
       });
-      chartOption.value.series[0].data = sortedBills.value.map(item => item.profit);
+      chartOption.value.series[0].data = sortedBills.value.map(item => item.promote);
+      chartOption.value.series[1].data = sortedBills.value.map(item => item.power);
       myChart.value = echarts.init(document.getElementById('chart'));
       myChart.value.setOption(chartOption.value);
       watch(() => sortedBills.value, (newSortedBills) => {
@@ -164,8 +195,8 @@ export default {
           return item.year + '-' + item.month;
         });
 
-        chartOption.value.series[0].data = newSortedBills.map(item => item.profit);
-
+        chartOption.value.series[0].data = newSortedBills.map(item => item.promote);
+        chartOption.value.series[1].data = newSortedBills.map(item => item.power);
         // Update the ECharts chart
         myChart.value.setOption(chartOption.value);
       });
@@ -179,7 +210,7 @@ export default {
       end_month,
       cities,
       sortedBills,
-      myChart,
+      chartOption,
       fetchandProcessBillData
     };
   },
