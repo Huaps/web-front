@@ -93,27 +93,28 @@
 
 
     <template>
-  <div>
+      <div>
     <!-- Server files -->
-    <v-list-item
+      <v-list-item
         v-for="(file, index) in BindData.files"
-        :key="index"
+        :key="file.id"
         :title="FILES.getFileName(file.url)"
         @click="QUERY.download(file.url)">
-      <template v-slot:prepend>
-        <v-icon color="grey-darken-3"> {{ FILES.iconFileType(FILES.getFileExtension(file.url)) }} </v-icon>
-      </template>
-      <template v-slot:append>
-        <v-btn icon="" variant="text" color="red" size="small" v-if="props.modified && Status.update"
-          @click.stop="serverFileRemove(index)"
-        >
-          <v-icon size="large">mdi-close</v-icon>
-        </v-btn>
-      </template>
-    </v-list-item>
+
+        <template v-slot:prepend>
+          <v-icon color="grey-darken-3"> {{ FILES.iconFileType(FILES.getFileExtension(file.url)) }} </v-icon>
+        </template>
+
+        <template v-if="Status.modify" v-slot:append>
+          <v-btn @click.stop="serverFileRemove(index)" icon="" variant="text" color="red" size="small">
+            <v-icon size="large">mdi-close</v-icon>
+          </v-btn>
+        </template>
+
+      </v-list-item>
 
     <!-- Local files -->
-    <template v-if="props.modified && Status.update">
+      <template v-if="props.modified && Status.update">
       <v-list-item v-for="(file, index) in BindInput.files" :key="index"
         :title="file.name"
         :subtitle="FILES.formatFileSize(file.size)"
@@ -502,7 +503,7 @@ function init() {
       id: file.id,
       url: file.url
     }));
-    console.log("文件："+BindData.files);
+    console.log("文件："+BindData.files.values());
     BindData.status = info.status;
     // copy to input
     BindInput.desc = BindData.desc;
