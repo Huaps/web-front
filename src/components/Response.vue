@@ -95,12 +95,13 @@
     <template>
   <div>
     <!-- Server files -->
-    <v-list-item v-for="(file, index) in BindData.files" :key="index"
-      :title="file.filename"
-      :subtitle="FILES.formatFileSize(file.size)"
-    >
+    <v-list-item
+        v-for="(file, index) in BindData.files"
+        :key="index"
+        :title="FILES.getFileName(file.url)"
+        @click="QUERY.download(file.url)">
       <template v-slot:prepend>
-        <v-icon color="grey-darken-3"> {{ FILES.iconFileType(file.mime) }} </v-icon>
+        <v-icon color="grey-darken-3"> {{ FILES.iconFileType(FILES.getFileExtension(file.url)) }} </v-icon>
       </template>
       <template v-slot:append>
         <v-btn icon="" variant="text" color="red" size="small" v-if="props.modified && Status.update"
