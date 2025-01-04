@@ -378,6 +378,7 @@ function uploadModify() {
   formData.append('power_id', props.response_id);
   formData.append('description', BindInput.desc);
   // images
+  /*
   for (let i = 0; i < BindInput.images.length; i++) {
     const file = BindInput.images[i];
     formData.append('image_files', file);
@@ -387,7 +388,7 @@ function uploadModify() {
     const file = BindInput.files[i];
     formData.append('raw_files', file);
   }
-
+*/
   QUERY.post('/api/user/response/modify', formData, null, false)
   .then(res => {
     Events.info('修改成功');
