@@ -130,6 +130,6 @@ function randomImage() {
 }
 
 function checkDetail() {
-  Router.push('/home/detail/' + props.promote_id)
+  Router.push('/home/detail/' + props.data.promote_id)
 }
 </script>
