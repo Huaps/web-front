@@ -6,7 +6,6 @@
   </p>
 
   <p class="align-self-center text-body-2 text-grey-darken-2 mt-3">
-    <strong>{{ UserCity }}</strong> -
     共 <strong>{{ TotalNum }} </strong> 条请求
   </p>
 
