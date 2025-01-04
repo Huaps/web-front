@@ -344,8 +344,8 @@ function reject() {
   if(!confirm('确认拒绝?')) return;
   RefLoading.value.show();
   QUERY.post('/api/user/request/reply',{
-    request_id: props.request_id,
-    response_id: props.response_id,
+    promote_id: props.request_id,
+    power_id: props.response_id,
     action: "deny"
   })
   .then(data => {
