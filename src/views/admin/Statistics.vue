@@ -15,7 +15,7 @@
         </d-select>
       </div>
     </div>
-    <div id="chart" :style="{ width: '80%', height: '400px' }" class="charts"></div>
+    <div id="chart" :style="{ width: '80%', height: '400px'}" class="charts"></div>
     <v-data-table
       :headers="headers"
       :items="filteredBills"
@@ -66,6 +66,7 @@
 
 .charts {
   margin-top: 20px;
+  align-self: center;
 }
 
 .element {
