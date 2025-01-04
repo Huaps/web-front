@@ -30,7 +30,7 @@
   <div class="my-2">
     <v-row>
       <v-col v-for="(value, key) in Posts" justify="center">
-        <poster :id="Number(value.id)" :data="value" :tagAction="newQuery"/>
+        <poster :id="Number(value.promote_id)" :data="value" :tagAction="newQuery"/>
       </v-col>
     </v-row>
   </div>
