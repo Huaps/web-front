@@ -502,6 +502,7 @@ function init() {
       id: file.id,
       url: file.url
     }));
+    console.log("文件："+BindData.files);
     BindData.status = info.status;
     // copy to input
     BindInput.desc = BindData.desc;
