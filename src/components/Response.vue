@@ -407,30 +407,56 @@ function cancel() {
 }
 
 // upload
-function upload() {
-  if(!confirm('确认发布?')) return;
+async function upload() {
+  if (!confirm('确认发布?')) return;
   Status.uploading = true;
   const formData = new FormData();
   formData.append('description', BindInput.desc);
-  formData.append('request_id', props.request_id);
-  formData.append('responder_id', QUERY.get_user_id());
-  // images
-  for (let i = 0; i < BindInput.images.length; i++) {
-    const file = BindInput.images[i];
-    formData.append('image_files', file);
+  formData.append('promote_id', props.request_id);
+  formData.append('user_id', QUERY.get_user_id());
+
+  // 上传图片并获取URL
+  async function uploadFiles(files) {
+    const urls = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const fileFormData = new FormData();
+      fileFormData.append('file', file);
+      try {
+        const response = await QUERY.post('/api/upload', fileFormData, null, false);
+        if (response.code === 1) {
+          urls.push(response.data);
+          console.log('得到图片' + response.data)
+        } else {
+          Events.warn('文件上传失败: ' + file.name);
+        }
+      } catch (err) {
+        Events.warn('文件上传发生错误: ' + file.name);
+        console.error(err);
+      }
+    }
+    return urls;
   }
-  // files
-  for (let i = 0; i < BindInput.files.length; i++) {
-    const file = BindInput.files[i];
-    formData.append('raw_files', file);
+
+  // 上传并添加图片URL到 formData
+  const imageUrls = await uploadFiles(BindInput.images);
+  for (let i = 0; i < imageUrls.length; i++) {
+    formData.append('image_files', imageUrls[i]);
   }
+
+  // 上传并添加文件URL到 formData
+  const rawUrls = await uploadFiles(BindInput.files);
+  for (let i = 0; i < rawUrls.length; i++) {
+    formData.append('raw_files', rawUrls[i]);
+  }
+  
   // post to server
   QUERY.post('/api/user/response/post', formData, null, false)
-  .then(res => {
-    Status.uploading = false;
-    Events.info('发布成功')
-    props.on_success();
-  })
+    .then(res => {
+      Status.uploading = false;
+      Events.info('发布成功')
+      props.on_success();
+    })
 }
 
 // delete current
