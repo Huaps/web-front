@@ -105,8 +105,8 @@ export default {
     // Reactive properties
     const Router = useRouter();
     const current_location = ref('none');
-    const start_month = ref('2022-01');
-    const end_month = ref('2025-12');
+    const start_month = ref('2023-01');
+    const end_month = ref('2025-02');
     const cities = ref([]);
     const filteredBills = ref([]);
     const sortedBills = ref([]);
