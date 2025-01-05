@@ -8,7 +8,7 @@
       :elevation="isHovering ? 6 : 1"
       @click="checkDetail"
     >
-      <v-img :src="Data.img.url"
+      <v-img :src="Data.img[0].url"
         lazy-src="https://fakeimg.pl/400x300/?retina=1&text=image&font=lobster"
         height="330" cover
       />
@@ -117,17 +117,10 @@ const Data = reactive({
   biref: props.data.description,
   status: props.data.status,
   reply: props.data.reply,
-  img: randomImage(),
+  img: props.data.image_files,
 })
 
-function randomImage() {
-  let result;
-  result = {
-    id:0,
-    url:"https://spring-webwebweb.oss-cn-hangzhou.aliyuncs.com/9253d190-3972-41f1-a3e5-9b5476c4ae26.jpg"
-  }
-  return result
-}
+
 
 function checkDetail() {
   Router.push('/home/detail/' + props.data.promote_id)
